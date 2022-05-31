@@ -19,11 +19,20 @@ func main() {
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
 	}
-	pods, err := clientset.CoreV1().Pods("default").List(context.Background(), metav1.ListOptions{})
+	ctx := context.Background()
+	pods, err := clientset.CoreV1().Pods("default").List(ctx, metav1.ListOptions{})
 	if err != nil {
 	}
 	fmt.Println("Pods from default ns")
 	for _, pod := range pods.Items {
 		fmt.Println(pod.Name)
 	}
+	ingress, err := clientset.NetworkingV1().Ingresses("default").List(ctx, metav1.ListOptions{})
+	if err != nil {
+	}
+	fmt.Println("Listing Ingresses")
+	for _, ing := range ingress.Items {
+		fmt.Println(ing.Name)
+	}
+
 }
